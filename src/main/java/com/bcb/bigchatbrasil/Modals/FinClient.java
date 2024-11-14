@@ -3,6 +3,7 @@ package com.bcb.bigchatbrasil.Modals;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Data
@@ -14,6 +15,7 @@ public class FinClient {
 
     private Integer limitCredit;
     private Integer credit;
+    private BigDecimal valuePlan;
 
     @OneToOne
     @JoinColumn(name = "client_fk")
