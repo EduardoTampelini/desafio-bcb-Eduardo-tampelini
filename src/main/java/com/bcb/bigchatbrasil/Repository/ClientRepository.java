@@ -10,5 +10,4 @@ public interface ClientRepository extends JpaRepository<ClientModal, UUID> {
 
     Optional<ClientModal> findById(UUID id);
 
-    ClientModal findByEmail(String email);
 }

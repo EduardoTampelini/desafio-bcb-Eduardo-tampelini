@@ -1,15 +1,13 @@
 package com.bcb.bigchatbrasil.Modals;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.Email;
+import com.bcb.bigchatbrasil.Modals.enums.DocumentType;
+import com.bcb.bigchatbrasil.Modals.enums.PlanType;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.br.CNPJ;
-import org.hibernate.validator.constraints.br.CPF;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -20,16 +18,19 @@ public class ClientModal {
     @Id
     @GeneratedValue(generator = "UUID")
     private UUID id;
+    @OneToOne
+    @JoinColumn(name = "user_fk")
+    private UserModal userid;
+    private String documentID;
+    @Enumerated(EnumType.STRING)
+    private DocumentType documentType;
 
-    private String name;
-    @Email
-    private String email;
-    @CPF
-    private String cpf;
-    private String phone;
-    @CNPJ
-    private String  cnpj;
-    private String nameCompany;
+    @Enumerated(EnumType.STRING)
+    private PlanType planType;
+    private BigDecimal balance;
+    @Column(name = "credit_limit")
+    private Integer limit;
+    private boolean active;
 
 
 }
