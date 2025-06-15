@@ -1,240 +1,261 @@
-# REST API Big chat Brasil
+# BigChat Brasil API
 
-Bem-vindo à API REST Big chat Brasil! Esta API foi projetada para execultar as funções basicas solicitadas no desafio  proposto (https://github.com/fhgomes/fhgomes/blob/master/entrevistas/teste-backend.md).
+Bem-vindo à **API REST BigChat Brasil**, uma solução desenvolvida para gerenciamento de clientes, conversas, mensagens e filas de envio.
 
+Base URL:
 
-# REST API
+```
+http://localhost:8080/api
+```
 
-Segue as rotas da API e exemplos de retornos
+---
 
-## listar os clientes
+## 📁 Clientes
 
-### Request
+### ➕ Criar Cliente
 
-`GET /client/`
+**POST** `/clients`
 
-    http://localhost:8080/client/
+**Headers:**
 
-### Response
-  
-    Status: 200 
-    body:{
-        "id": "49063d6b-971b-48dd-a163-4e012f73e820",
-        "name": "ab",
-        "email": "av@gmail.com",
-        "cpf": "000000000",
-        "phone": "0000000",
-        "cnpj": "00000000000",
-        "nameCompany": "teste ltda"
-    }
+```
+Content-Type: application/json
+```
 
-## Cadastrar clientes
+**Body (JSON):**
 
-### Request
+```json
+{
+  "name": "Empresa ABC Ltda 2",
+  "documentId": "12345678000199",
+  "documentType": "CNPJ",
+  "planType": "prepaid",
+  "initialBalance": 1000.00,
+  "limit": 0
+}
+```
 
-`POST /client/`
+**Response:**
 
-     http://localhost:8080/client/
-     body:{
-        "email": "",
-        "name": "",
-        "cpf":"",
-        "phone":"",
-        "cnpj": "",
-        "nameCompany":""
-     }
+```
+Status: 201 CREATED
+```
 
-### Response
+---
 
-    
-    Status: 201 
-    body:{
-       "id": "7258fa04-0461-462c-8838-21791a683be3",
-      "name": "ab",
-      "email": "ezafalon0@gmail.com",
-      "cpf": "03119830062",
-      "phone": "44997345070",
-      "cnpj": "16501555000238",
-      "nameCompany": "teste ltda"
-    }
+### 🔍 Obter Cliente por ID
 
-## Consultar client  
+**GET** `/clients/:id`
 
-### Request
+**Response:**
 
-`GET /client/:id`
+```
+Status: 200 OK
+Body:
+{
+  "id": "uuid",
+  "name": "Empresa ABC Ltda 2",
+  "documentId": "12345678000199",
+  "documentType": "CNPJ",
+  "planType": "prepaid",
+  "initialBalance": 1000.00,
+  "limit": 0
+}
+```
 
-        http://localhost:8080/client/:id
+---
 
-### Response
+### 💰 Atualizar Saldo do Cliente
 
-     Status: 200 
-     body:{
-        "id": "49063d6b-971b-48dd-a163-4e012f73e820",
-        "name": "ab",
-        "email": "av@gmail.com",
-        "cpf": "000000000",
-        "phone": "0000000",
-        "cnpj": "00000000000",
-        "nameCompany": "teste ltda"
-    }  
-    
-    Não pode ter o mesmo cliente com o mesmo email então caso tente cadastrar ele vai retornar 400
+**POST** `/clients/:id/balance`
 
-## Consultar financeiro cliente
+**Headers:**
 
-### Request
+```
+Content-Type: application/json
+```
 
-`GET /fin/:id`
+**Body (JSON):**
 
-            http://localhost:8080/fin/:id
+```json
+{
+  "amount": 500.00
+}
+```
 
-### Response
+**Response:**
 
-    Status: 200
-    body: {
-      "id": "42c05a58-4d9e-4450-8676-651d3f951b10",
-      "limitCredit": 10,
-      "credit": 0,
-      "valuePlan": 10.00,
-      "client": {
-          "id": "c6d993ee-07c1-4963-916d-cf40f8a361ca",
-          "name": "ab",
-          "email": "ab@gmail.com",
-          "cpf": "000000",
-          "phone": "00000",
-          "cnpj": "000000",
-          "nameCompany": "teste ltda"
-      }
-    }
+```
+Status: 200 OK
+```
 
-## Cadastrar financeiro client
+---
 
-### Request
+## 💬 Conversas
 
-`POST /fin/`
+### ➕ Criar Conversa
 
-    http://localhost:8080/fin/
-    body:{
-      limitCredit": 10,
-      "credit": 0,
-      "valuePlan": 10.00,
-      "client": {
-          "id": "c6d993ee-07c1-4963-916d-cf40f8a361ca",
-          "name": "ab",
-          "email": "ab@gmail.com",
-          "cpf": "000000",
-          "phone": "00000",
-          "cnpj": "000000",
-          "nameCompany": "teste ltda"
-      }
-    }
+**POST** `/conversations`
 
-### Response
+**Headers:**
 
-    Status: 201
-    body: {
-      "id": "42c05a58-4d9e-4450-8676-651d3f951b10",
-      "limitCredit": 10,
-      "credit": 0,
-      "valuePlan": 10.00,
-      "client": {
-          "id": "c6d993ee-07c1-4963-916d-cf40f8a361ca",
-          "name": "ab",
-          "email": "ab@gmail.com",
-          "cpf": "000000",
-          "phone": "00000",
-          "cnpj": "000000",
-          "nameCompany": "teste ltda"
-      }
-    }
+```
+Content-Type: application/json
+```
 
-## adicionar crédito cliente
+**Body (JSON):**
 
-### Request
+```json
+{
+  "clientId": "uuid-do-cliente",
+  "recipientId": "uuid-do-destinatario"
+}
+```
 
-`POST /fin/credit/:id`
+**Response:**
 
-        http://localhost:8080/fin/credit/:id
-        body: 5 (valor que deseja tem que ser um integer)
+```
+Status: 201 CREATED
+```
 
-### Response
+---
 
-    
-    Status: 200 
-    body:(valor de crédito do cliente)
+### 📄 Listar Conversas
 
-    Caso tenha chegado no limite de crédito ou valor 0 ele vai retonar status 400 e informar que o valor é invalido
+**GET** `/conversations`
 
-## Saldo do cliente
+**Response:**
 
-### Request
+```
+Status: 200 OK
+```
 
-`GET /fin/balance/:id`
+---
 
-        http://localhost:8080/fin/balance/:id
-        
-### Response
+### 🔍 Obter Conversa por ID
 
-    Status: 200 
-    body:(valor do saldo)
+**GET** `/conversations/:id`
 
-## Alterar limite do cliente
+**Response:**
 
-### Request
+```
+Status: 200 OK
+```
 
-`PUT /fin/limitClient/:id`
+---
 
-    http://localhost:8080/fin/limitClient/:id
-    body: 5 (valor que deseja tem que ser um integer)
+### 📥 Obter Mensagens da Conversa
 
-### Response
+**GET** `/conversations/:id/messages`
 
-    Status: 200 
-    body:(valor do limite)
+**Response:**
 
-## Alterar Plano do cliente
+```
+Status: 200 OK
+```
 
-### Request
+---
 
-`PUT /fin/plan/:id`
+## ✉️ Mensagens
 
-     http://localhost:8080/fin/plan/1
-     body:{
-      "limitcred": 10,
-      "cred": 0,
-      "value":10.00,
-     
+### ➕ Enviar Mensagem
 
-### Response
+**POST** `/messages`
 
-    
-    Status: 200 OK
-    body: Alteração feita
-    
+**Headers:**
 
-## Enviar SMS
+```
+Content-Type: application/json
+```
 
-### Request
+**Body (JSON):**
 
-`POST /sms/`
+```json
+{
+  "chatId": "uuid-da-conversa",
+  "recipientId": "uuid-do-destinatario",
+  "content": "Olá, como vai?",
+  "priority": "normal"
+}
+```
 
-    http://localhost:8080/sms/
-    body:{
-      "phone": "449999999",
-      "isWhatsApp": false/true,
-      "text":"testeeeeee",
-    }
+**Response:**
 
-### Response
+```
+Status: 201 CREATED
+```
 
-   
-    Status: 201
-    body:{
-      "id":"49063d6b-971b-48dd-a163-651d3f951b10"
-      "phone": "449999999",
-      "isWhatsApp": false/true,
-      "text":"testeeeeee",
-    }
-    
+---
+
+### 📄 Listar Mensagens
+
+**GET** `/messages`
+
+**Response:**
+
+```
+Status: 200 OK
+```
+
+---
+
+### 🔍 Obter Mensagem por ID
+
+**GET** `/messages/:id`
+
+**Response:**
+
+```
+Status: 200 OK
+```
+
+---
+
+## ⏳ Fila
+
+### 📊 Verificar Status da Fila
+
+**GET** `/queue/status`
+
+**Response:**
+
+```
+Status: 200 OK
+Body:
+{
+  "status": "OK",
+  "messagesInQueue": 5
+}
+```
+
+---
+
+## 🔧 Variáveis de Ambiente
+
+A coleção usa a seguinte variável:
+
+```
+{{base_url}} = http://localhost:8080/api
+```
+
+---
+
+## 🧪 Considerações
+
+- Todos os endpoints `POST` devem ser enviados com `Content-Type: application/json`.
+- Os IDs são do tipo UUID.
+- Clientes têm saldo inicial, limite de crédito e plano configuráveis.
+- Mensagens têm prioridade e são associadas a conversas.
+
+---
+
+## 🔮 Testes via Postman
+
+Importe o arquivo `BigChat Brasil API.postman_collection.json` no Postman para testar todos os endpoints com facilidade. Configure a variável `base_url` no ambiente Postman para apontar para sua API local ou remota.
+
+---
+
+Para dúvidas ou melhorias, sinta-se à vontade para abrir um issue ou PR.
+
+> Desenvolvido como parte do desafio proposto para o sistema de mensagens da BigChat Brasil.
 
